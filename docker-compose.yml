@@ -1,25 +1,44 @@
 version: '3'
 services:
   prometheus:
-    image:
-    containername:
-    ports:
+    image: prom/prometheus:v2.44.0
+    containername: prometheus
+    ports: 9090:9090
     volume:
+      - prometheus.yml:/etc/prometheus/prometheus.yml
     network:
+      - monitor
     
   grafana:
-    image:
-    containername:
+    image: grafana/grafana:9.5.2
+    containername: grafana
     ports:
-    volume:
+      - 3000:3000
+#    volume:
     network:
+      - monitor
     
-  acdvisor:
-    image:
-    containername:
+  cadvisor:
+    image: google/cadvisorv0.33.0
+    containername: cadvisor
+    ports:
+      - 8080:8080
+    volume:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    network:
+      - monitor
+    
+  node-exporter:
+    image: prom/node-exporter:v1.5.0
+    containername: node-exporter
     ports:
     volume:
     network:
+      - monitor
     
  network:
    -
