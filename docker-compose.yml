@@ -1,17 +1,25 @@
-version: '3'
+version: '3.8'
 services:
   prometheus:
     image: prom/prometheus:v2.44.0
-    containername: prometheus
+    container_name: prometheus
+    restart: unless-stopped
     ports: 9090:9090
     volume:
-      - prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+ #     - prometheus_data:/prometheus
+ #   command:
+ #     - '--config.file=/etc/prometheus/prometheus.yml'
+ #     - '--storage.tsdb.path=/prometheus'
+ #     - '--web.console.libraries=/etc/prometheus/console_libraries'
+ #     - '--web.console.templates=/etc/prometheus/consoles'
+ #     - '--web.enable-lifecycle'
     network:
       - monitor
     
   grafana:
     image: grafana/grafana:9.5.2
-    containername: grafana
+    container_name: grafana
     ports:
       - 3000:3000
 #    volume:
@@ -20,7 +28,7 @@ services:
     
   cadvisor:
     image: google/cadvisorv0.33.0
-    containername: cadvisor
+    container_name: cadvisor
     ports:
       - 8080:8080
     volume:
@@ -34,16 +42,25 @@ services:
     
   node-exporter:
     image: prom/node-exporter:v1.5.0
-    containername: node-exporter
+    container_name: node-exporter
+    restart: unless-stopped
     ports:
-    volume:
+      - 9100:9100
+#    volume:
+#      - /proc:/host/proc:ro
+#      - /sys:/host/sys:ro
+#      - /:/rootfs:ro
+#    command:
+#      - '--path.procfs=/host/proc'
+#      - '--path.rootfs=/rootfs'
+#      - '--path.sysfs=/host/sys'
+#      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
     network:
       - monitor
     
- network:
-   -
-   -
+ networks:
+   monitor:
+     driver: bridge
    
- volume:
-   -
-   -
+# volumes:
+#   prometheus_data: {}
