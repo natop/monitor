@@ -1,0 +1,30 @@
+version: '3'
+services:
+  prometheus:
+    image:
+    containername:
+    ports:
+    volume:
+    network:
+    
+  grafana:
+    image:
+    containername:
+    ports:
+    volume:
+    network:
+    
+  acdvisor:
+    image:
+    containername:
+    ports:
+    volume:
+    network:
+    
+ network:
+   -
+   -
+   
+ volume:
+   -
+   -
